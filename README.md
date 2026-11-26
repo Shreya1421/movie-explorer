@@ -1,16 +1,57 @@
-# React + Vite
+# Movie Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A Netflix-style movie browser built with React and the TMDB API. Browse trending titles, search with debounced input, filter by genre, watch trailers and see the cast, and save favorites to a personal list.
 
-Currently, two official plugins are available:
+**Live demo:** [https://movie-explorer-gamma-pink.vercel.app]
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+![Home page](docs/home.png)
 
-## React Compiler
+| Browse with filters | Movie details | My List |
+| --- | --- | --- |
+| ![Browse](docs/browse.png) | ![Details](docs/detail.png) | ![My List](docs/my-list.png) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Home page with a featured banner and horizontally scrolling rows (Trending, Popular, Top rated, Upcoming)
+- Debounced search with a results page and an empty-state message
+- Browse page with genre filters, sorting and "Load more" pagination; filters are stored in the URL
+- Movie detail page with overview, runtime, genres, trailer and cast
+- Favorites saved in localStorage, with a "My List" page and a count in the navbar
+- Loading skeletons, error messages with retry, and a 404 page
+- Responsive layout and keyboard-friendly focus styles
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech stack
+
+React, Vite, React Router, plain CSS, TMDB API, Vercel (hosting and a serverless function)
+
+## How it works
+
+The browser never calls TMDB directly in production. Requests go to a small serverless function (`api/tmdb.js`) on Vercel, which adds the API token on the server and forwards the request. This keeps the token out of the front-end code and lets the site work for visitors whose networks block TMDB.
+
+## Run it locally
+
+1. Clone the repo and run `npm install`
+2. Create a free account at themoviedb.org and copy your API Read Access Token
+3. Create a file named `.env.local` in the project root:
+   ```
+   VITE_TMDB_TOKEN=your_token_here
+   ```
+4. Run `npm run dev` and open the address it prints
+
+## What I learned
+
+- Fetching real API data and handling loading, error and empty states
+- Routing with React Router and keeping search and filter state in the URL
+- Sharing state with React Context and persisting it with localStorage
+- Writing a serverless proxy to protect an API token and work around network blocking
+- Deploying a React app to Vercel with environment variables
+
+## Ideas for next steps
+
+- User accounts so favorites sync across devices
+- Infinite scroll on Browse
+- Tests for key components
+
+## Credits
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
